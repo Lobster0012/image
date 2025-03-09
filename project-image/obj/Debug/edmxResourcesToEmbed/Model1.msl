@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище DbImageModelContainer" CdmEntityContainer="DbImageEntities">
+    <EntitySetMapping Name="primer">
+      <EntityTypeMapping TypeName="DbImageModel.primer">
+        <MappingFragment StoreEntitySet="primer">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="opisanie" ColumnName="opisanie" />
+          <ScalarProperty Name="photo_fail" ColumnName="photo_fail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

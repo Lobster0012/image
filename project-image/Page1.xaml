@@ -8,7 +8,32 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page1">
 
+    <Page.Resources>
+        <!-- Конвертер для преобразования byte[] в изображение -->
+        <local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
+    </Page.Resources>
     <Grid>
-        
+        <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <!-- Карточка -->
+                    <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Padding="10">
+                        <StackPanel>
+                            <!-- Описание -->
+                            <TextBlock Text="{Binding Opisanie}" FontSize="16" FontWeight="Bold" />
+                            <!-- Изображение -->
+                            <Image Source="{Binding PhotoFail, Converter={StaticResource ByteArrayToImageConverter}}" 
+                                   Width="200" Height="150" Stretch="Uniform" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <!-- Расположение карточек в WrapPanel -->
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Page>

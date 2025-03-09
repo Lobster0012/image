@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace project_image
 {
@@ -25,22 +20,50 @@ namespace project_image
             InitializeComponent();
             LoadData();
         }
+
+        private void LoadData()
+        {
+            using (var _context = DbImageEntities.GetContext())
+            {
+                var data = _context.primer.ToList();
+
+                var primerList = data.Select(p => new
+                {
+                    Id = p.id,
+                    Opisanie = p.opisanie,
+                    PhotoFail = p.photo_fail
+                }).ToList();
+
+                DataContext = primerList;
+            }
+        }
     }
 
-    private void LoadData()
+    /// <summary>
+    /// Конвертер для преобразования byte[] в изображение
+    /// </summary>
+    public class ByteArrayToImageConverter : IValueConverter
     {
-        using (var _context = DbImageEntities.GetContext())
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var data = _context.primer.ToList();
-
-            var primerList = data.Select(p => new
+            if (value is byte[] byteArray && byteArray.Length > 0)
             {
-                Id = p.id,
-                Opisanie = p.opisanie,
-                PhotoFail = p.photo_fail
-            }).ToList();
+                var image = new BitmapImage();
+                using (var stream = new MemoryStream(byteArray))
+                {
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+                }
+                return image;
+            }
+            return null;
+        }
 
-            DataContext = primerList;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
